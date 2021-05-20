@@ -3,9 +3,9 @@
 }
 
 .list-group-item {
-  line-height: 0.5;
   border: none;
 }
+
 .card-body {
   flex: auto;
 }

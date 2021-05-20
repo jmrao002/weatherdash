@@ -1,13 +1,12 @@
-let cityHistory = JSON.parse(localStorage.getItem("cities")) || [];
-
+// global variables
 let cityFormEl = document.querySelector("#city-search-form");
 let cityInputEl = document.querySelector("#city");
 let weatherContainerEl = document.querySelector("#current-weather-container");
 let citySearchInputEl = document.querySelector("#searched-city");
-let forecastText = document.querySelector("#forecast-header-text");
+let forecastTextEl = document.querySelector("#forecast-header-text");
 let forecastContainerEl = document.querySelector("#fiveday-container");
-let pastSearchButtonEl = document.querySelector("#past-search-buttons");
-
+let previousSearchButtonEl = document.querySelector("#past-search-buttons");
+let cityHistory = JSON.parse(localStorage.getItem("cities")) || [];
 // api key for authentication
 const apiKey = "e16c89093c956c2cd45ad971b9b24220";
 const baseUrl = "https://api.openweathermap.org/data/2.5/";
@@ -24,7 +23,7 @@ function getWeather(e) {
     alert("Please enter a City");
   }
   saveSearch();
-  pastSearch(city);
+  searchHistory(city);
 }
 
 function saveSearch() {
@@ -132,16 +131,17 @@ function get5Day(city) {
   });
 }
 
+// function to print 5 day forecast
 function print5Day(weather) {
   forecastContainerEl.textContent = "";
-  forecastText.textContent = "5-Day Forecast:";
+  forecastTextEl.textContent = "5-Day Forecast:";
 
   let forecast = weather.list;
   for (let i = 5; i < forecast.length; i = i + 8) {
     let dailyForecast = forecast[i];
 
     let forecastEl = document.createElement("div");
-    forecastEl.classList = "card bg-primary text-light m-2";
+    forecastEl.classList = "card bg-info text-light m-2";
 
     //create date element
     let forecastDate = document.createElement("h5");
@@ -187,17 +187,17 @@ function print5Day(weather) {
   }
 }
 
-function pastSearch(pastSearch) {
-  pastSearchEl = document.createElement("button");
-  pastSearchEl.textContent = pastSearch;
-  pastSearchEl.classList = "d-flex w-100 btn-light border p-2";
-  pastSearchEl.setAttribute("data-city", pastSearch);
-  pastSearchEl.setAttribute("type", "submit");
-
-  pastSearchButtonEl.prepend(pastSearchEl);
+// function to populate aside with previous search data
+function searchHistory(previousSearch) {
+  searchHistoryEl = document.createElement("button");
+  searchHistoryEl.textContent = previousSearch;
+  searchHistoryEl.classList = "d-flex w-100 btn-light rounded border p-2";
+  searchHistoryEl.setAttribute("data-city", previousSearch);
+  searchHistoryEl.setAttribute("type", "submit");
+  previousSearchButtonEl.prepend(searchHistoryEl);
 }
 
-function pastSearchHandler(event) {
+function previousSearchHandler(event) {
   let city = event.target.getAttribute("data-city");
   if (city) {
     getCityWeather(city);
@@ -206,7 +206,7 @@ function pastSearchHandler(event) {
 }
 
 // event listeners
-cityFormEl.addEventListener("submit", getWeath);
-pastSearchButtonEl.addEventListener("click", pastSearchHandler);
+cityFormEl.addEventListener("submit", getWeather);
+previousSearchButtonEl.addEventListener("click", previousSearchHandler);
 
 // add function to return alert error if city is not found
