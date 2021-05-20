@@ -3,50 +3,43 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <title>Weather Dashboard</title>
 </head>
 
 <body>
-    <header>
-        <span>Weather Dashboard</span>
+    <header class="bg-dark text-white text-center p-2">
+        <h1>Weather Dashboard</h1>
     </header>
-    <aside>
-        <h2>Search for a City</h2>
-        <input id="city-text" type="text" placeholder="e.g. San Diego">
-        <button type="search-button">Search</button>
-        <hr>
-        <form id="history-container"></form>
-    </aside>
-    <section>
-        <article>
-            <header>
-                <p id="city-name"></p>
-                <p id="date"></p>
-                <icon id="weather-icon"></icon>
-            </header>
-            <p id="current-temp"></p>
-            <p id="current-wind"></p>
-            <p id="current-humidity"></p>
-            <p id="current-uvindex"></p>
-        </article>
-        <article>
-            <header>5-Day Forecast: </header>
-            <div class="row">
-                <div class="col forecast bg-primary text-white ml-3 mb-3"></div>
-                <div class="col forecast bg-primary text-white ml-3 mb-3"></div>
-                <div class="col forecast bg-primary text-white ml-3 mb-3"></div>
-                <div class="col forecast bg-primary text-white ml-3 mb-3"></div>
-                <div class="col forecast bg-primary text-white ml-3 mb-3"></div>
+    <main class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-3 p-4 search-column">
+                <form class="border p-2" id="city-search-form">
+                    <h4>Search for a City</h2>
+                        <input id="city" type="text" autofocus="true" class="form-input" />
+                        <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+                <div class="past-search border" id="past-search-buttons"></div>
             </div>
-        </article>
-    </section>
-
+            <div class="col-12 col-md-9">
+                <div class="row border selected-city" id="current-forecast">
+                    <div class="col-12">
+                        <h2 id="searched-city"></h2>
+                        <div id="current-weather-container" class="list-group"></div>
+                    </div>
+                </div>
+                <div class="row border" id="five-day-forecast">
+                    <h2 class="col-12" id="forecast-header-text"></h2>
+                    <div class="d-flex" id="fiveday-container"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script src="./assets/js/index.js"></script>
 </body>
 
