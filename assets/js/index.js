@@ -213,7 +213,7 @@ function searchHistory(previousSearch) {
 }
 
 // function to run search again from previous
-function previousSearchHandler(e) {
+function previousSearch(e) {
   let city = e.target.getAttribute("data-city");
   if (city) {
     getCityWeather(city);
@@ -223,4 +223,4 @@ function previousSearchHandler(e) {
 
 // event listeners
 cityFormEl.addEventListener("submit", getWeather);
-previousSearchButtonEl.addEventListener("click", previousSearchHandler);
+previousSearchButtonEl.addEventListener("click", previousSearch);
