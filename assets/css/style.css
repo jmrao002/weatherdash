@@ -2,14 +2,6 @@
   background-color: #d3d3d34f;
 }
 
-.list-group-item {
-  border: none;
-}
-
-.card-body {
-  flex: auto;
-}
-
 .severe {
   padding: 3px 10px;
   background-color: red;
