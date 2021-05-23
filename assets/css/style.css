@@ -1,5 +1,5 @@
 .search-column {
-  background-color: #d3d3d3;
+  background-color: #d3d3d34f;
 }
 
 .list-group-item {
@@ -10,18 +10,18 @@
   flex: auto;
 }
 
-span.severe {
+.severe {
   padding: 3px 10px;
   background-color: red;
   color: white;
 }
 
-span.moderate {
+.moderate {
   padding: 3px 10px;
   background-color: yellow;
 }
 
-span.favorable {
+.favorable {
   padding: 3px 10px;
   background-color: green;
   color: white;

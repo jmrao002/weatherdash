@@ -10,24 +10,30 @@
 </head>
 
 <body>
+    <!-- link to moment for date data -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <!-- link to js file -->
+    <script defer src="./assets/js/index.js"></script>
+    <!-- header -->
     <header class="bg-info text-white text-center p-2">
         <h1>Weather Dashboard</h1>
     </header>
-    <main class="container-fluid">
+    <!-- main container for body -->
+    <main>
         <div class="row">
             <aside class="col-12 col-md-3 p-4 search-column">
                 <form class="border p-2" id="city-search-form">
                     <h4>Search for a City</h2>
-                        <input id="city" type="text" autofocus="true" class="form-input" />
+                        <input id="city" type="text" placeholder="Chicago" class="form-input" />
                         <button class="btn btn-primary" type="submit">Search</button>
                 </form>
-                <div class="past-search border" id="past-search-buttons"></div>
+                <div class="past-search" id="search-history-buttons"></div>
             </aside>
-            <section class="col-12 col-md-9">
+            <section id="page-container" class="col-12 col-md-9 d-none">
                 <div class="row border selected-city" id="current-forecast">
                     <div class="col-12">
                         <h2 id="searched-city"></h2>
-                        <div id="current-weather-container" class="list-group"></div>
+                        <div id="todays-weather-container" class="list-group"></div>
                     </div>
                 </div>
                 <div class="row border" id="five-day-forecast">
@@ -37,8 +43,6 @@
             </section>
         </div>
     </main>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
-    <script src="./assets/js/index.js"></script>
 </body>
 
 </html>

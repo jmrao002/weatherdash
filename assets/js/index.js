@@ -1,31 +1,33 @@
 // global variables
 let cityFormEl = document.querySelector("#city-search-form");
 let cityInputEl = document.querySelector("#city");
-let weatherContainerEl = document.querySelector("#current-weather-container");
+let weatherContainerEl = document.querySelector("#todays-weather-container");
 let citySearchInputEl = document.querySelector("#searched-city");
 let forecastTextEl = document.querySelector("#forecast-header-text");
 let forecastContainerEl = document.querySelector("#fiveday-container");
-let previousSearchButtonEl = document.querySelector("#past-search-buttons");
+let previousSearchButtonEl = document.querySelector("#search-history-buttons");
 let cityHistory = JSON.parse(localStorage.getItem("cities")) || [];
 // api key for authentication
 const apiKey = "e16c89093c956c2cd45ad971b9b24220";
 const baseUrl = "https://api.openweathermap.org/data/2.5/";
 
+// function to get the weather and to throw an error if no data is entered
 function getWeather(e) {
   e.preventDefault();
-  var city = cityInputEl.value.trim();
-  if (city) {
+  let city = cityInputEl.value.trim();
+  if (!city) {
+    alert("Please enter a City");
+  } else {
     getCityWeather(city);
-    get5Day(city);
+    getFiveDay(city);
     cityHistory.unshift({ city });
     cityInputEl.value = "";
-  } else {
-    alert("Please enter a City");
+    saveSearch();
+    searchHistory(city);
   }
-  saveSearch();
-  searchHistory(city);
 }
 
+// put search data into local storage
 function saveSearch() {
   localStorage.setItem("cities", JSON.stringify(cityHistory));
 }
@@ -41,55 +43,56 @@ function getCityWeather(city) {
   });
 }
 
+// print weather data to screen
 function printWeather(weather, searchCity) {
-  // clear old content
+  // unhide page container
+  let pageContainerEl = document.querySelector("#page-container");
+  pageContainerEl.classList.remove("d-none");
+  // clear old content when searching for a new city
   weatherContainerEl.textContent = "";
   citySearchInputEl.textContent = searchCity;
-
-  // create date element
+  // create date el
   let currentDate = document.createElement("span");
   currentDate.textContent =
-    " (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
+    "   -   " + moment(weather.dt.value).format("MMM D, YYYY");
   citySearchInputEl.appendChild(currentDate);
-
-  // create an image element
+  // create an image el
   let weatherIcon = document.createElement("img");
   let icon = weather.weather[0].icon;
   weatherIcon.setAttribute(
     "src",
-    "https://openweathermap.org/img/wn/" + icon + "@2x.png"
+    "https://openweathermap.org/img/wn/" + icon + ".png"
   );
   citySearchInputEl.appendChild(weatherIcon);
 
-  // create a span element to hold temperature data
+  // create el to hold temperature data
   let temperatureEl = document.createElement("span");
-  temperatureEl.textContent = "Temperature: " + weather.main.temp + " °F";
+  temperatureEl.textContent =
+    "Temperature: " + Math.round(weather.main.temp) + "°F";
   temperatureEl.classList = "list-group-item";
 
-  // create a span element to hold Humidity data
+  // create el to hold Humidity data
   let humidityEl = document.createElement("span");
-  humidityEl.textContent = "Humidity: " + weather.main.humidity + " %";
+  humidityEl.textContent = "Humidity: " + weather.main.humidity + "%";
   humidityEl.classList = "list-group-item";
 
-  // create a span element to hold Wind data
+  // create el to hold Wind data
   let windSpeedEl = document.createElement("span");
-  windSpeedEl.textContent = "Wind Speed: " + weather.wind.speed + " MPH";
+  windSpeedEl.textContent = "Wind: " + Math.round(weather.wind.speed) + " MPH";
   windSpeedEl.classList = "list-group-item";
 
   //append to container
   weatherContainerEl.appendChild(temperatureEl);
-
-  //append to container
   weatherContainerEl.appendChild(humidityEl);
-
-  //append to container
   weatherContainerEl.appendChild(windSpeedEl);
 
+  // define latitute and longitude for following API call
   let lat = weather.coord.lat;
   let lon = weather.coord.lon;
   getUvIndex(lat, lon);
 }
 
+// get uv index from API using lat and lon from previous function
 function getUvIndex(lat, lon) {
   let apiUrl = baseUrl + "uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
   fetch(apiUrl).then(function (response) {
@@ -99,8 +102,9 @@ function getUvIndex(lat, lon) {
   });
 }
 
+// print uv index
 function printUvIndex(index) {
-  var uvIndexEl = document.createElement("div");
+  let uvIndexEl = document.createElement("div");
   uvIndexEl.textContent = "UV Index: ";
   uvIndexEl.classList = "list-group-item";
 
@@ -115,26 +119,26 @@ function printUvIndex(index) {
     uvIndexValue.classList = "rounded severe";
   }
 
-  uvIndexEl.appendChild(uvIndexValue);
-
   //append index to current weather
+  uvIndexEl.appendChild(uvIndexValue);
   weatherContainerEl.appendChild(uvIndexEl);
 }
 
-function get5Day(city) {
+// function to get the five dat forecast
+function getFiveDay(city) {
   let apiUrl =
     baseUrl + "forecast?q=" + city + "&units=imperial&appid=" + apiKey;
   fetch(apiUrl).then(function (response) {
     response.json().then(function (data) {
-      print5Day(data);
+      printForecast(data);
     });
   });
 }
 
 // function to print 5 day forecast
-function print5Day(weather) {
+function printForecast(weather) {
   forecastContainerEl.textContent = "";
-  forecastTextEl.textContent = "5-Day Forecast:";
+  forecastTextEl.textContent = "5-Day Forecast";
 
   let forecast = weather.list;
   for (let i = 5; i < forecast.length; i = i + 8) {
@@ -143,7 +147,7 @@ function print5Day(weather) {
     let forecastEl = document.createElement("div");
     forecastEl.classList = "card bg-info text-light m-2";
 
-    //create date element
+    //create date el
     let forecastDate = document.createElement("h5");
     forecastDate.textContent = moment
       .unix(dailyForecast.dt)
@@ -151,35 +155,37 @@ function print5Day(weather) {
     forecastDate.classList = "card-header text-center";
     forecastEl.appendChild(forecastDate);
 
-    //create an image element
+    //create an image el
     let weatherIcon = document.createElement("img");
     weatherIcon.classList = "card-body text-center";
     let icon = dailyForecast.weather[0].icon;
     weatherIcon.setAttribute(
       "src",
-      "https://openweathermap.org/img/wn/" + icon + "@2x.png"
+      "https://openweathermap.org/img/wn/" + icon + ".png"
     );
 
     //append to forecast card
     forecastEl.appendChild(weatherIcon);
 
-    //create and append temperature span
+    //create and append temp span
     let forecastTempEl = document.createElement("span");
-    forecastTempEl.classList = "card-body text-center";
-    forecastTempEl.textContent = "Temp: " + dailyForecast.main.temp + " °F";
+    forecastTempEl.classList = "card-body";
+    forecastTempEl.textContent =
+      "Temp: " + Math.round(dailyForecast.main.temp) + " °F";
     forecastEl.appendChild(forecastTempEl);
 
     //create and append wind span
     let forecastWindEl = document.createElement("span");
-    forecastWindEl.classList = "card-body text-center";
-    forecastWindEl.textContent = "Wind: " + dailyForecast.wind.speed + " MPH";
+    forecastWindEl.classList = "card-body";
+    forecastWindEl.textContent =
+      "Wind: " + Math.round(dailyForecast.wind.speed) + " MPH";
     forecastEl.appendChild(forecastWindEl);
 
     // create and append humidity span
     let forecastHumEl = document.createElement("span");
-    forecastHumEl.classList = "card-body text-center";
+    forecastHumEl.classList = "card-body";
     forecastHumEl.textContent =
-      "Humidity: " + dailyForecast.main.humidity + "  %";
+      "Humidity: " + dailyForecast.main.humidity + "%";
     forecastEl.appendChild(forecastHumEl);
 
     //append to five day container
@@ -197,16 +203,15 @@ function searchHistory(previousSearch) {
   previousSearchButtonEl.prepend(searchHistoryEl);
 }
 
-function previousSearchHandler(event) {
-  let city = event.target.getAttribute("data-city");
+// function to run search again from previous
+function previousSearchHandler(e) {
+  let city = e.target.getAttribute("data-city");
   if (city) {
     getCityWeather(city);
-    get5Day(city);
+    getFiveDay(city);
   }
 }
 
 // event listeners
 cityFormEl.addEventListener("submit", getWeather);
 previousSearchButtonEl.addEventListener("click", previousSearchHandler);
-
-// add function to return alert error if city is not found
