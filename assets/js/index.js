@@ -6,7 +6,7 @@ let citySearchInputEl = document.querySelector("#searched-city");
 let forecastTextEl = document.querySelector("#forecast-header-text");
 let forecastContainerEl = document.querySelector("#fiveday-container");
 let previousSearchButtonEl = document.querySelector("#search-history-buttons");
-let cityHistory = JSON.parse(localStorage.getItem("cities")) || [];
+let cityHistoryEl = JSON.parse(localStorage.getItem("cities")) || [];
 // api key for authentication
 const apiKey = "e16c89093c956c2cd45ad971b9b24220";
 const baseUrl = "https://api.openweathermap.org/data/2.5/";
@@ -20,7 +20,7 @@ function getWeather(e) {
   } else {
     getCityWeather(city);
     getFiveDay(city);
-    cityHistory.unshift({ city });
+    cityHistoryEl.unshift({ city });
     cityInputEl.value = "";
     saveSearch();
     searchHistory(city);
@@ -29,7 +29,7 @@ function getWeather(e) {
 
 // put search data into local storage
 function saveSearch() {
-  localStorage.setItem("cities", JSON.stringify(cityHistory));
+  localStorage.setItem("cities", JSON.stringify(cityHistoryEl));
 }
 
 // function to call API to get weather from search term
@@ -57,39 +57,39 @@ function printWeather(weather, searchCity) {
     "   -   " + moment(weather.dt.value).format("dddd MMM D");
   citySearchInputEl.appendChild(currentDate);
   // create an image el
-  let weatherIcon = document.createElement("img");
+  let wIcon = document.createElement("img");
   let icon = weather.weather[0].icon;
-  weatherIcon.setAttribute(
+  wIcon.setAttribute(
     "src",
     "https://openweathermap.org/img/wn/" + icon + ".png"
   );
-  citySearchInputEl.appendChild(weatherIcon);
+  citySearchInputEl.appendChild(wIcon);
   console.log(weather);
 
-  // create el to hold temperature data
-  let temperatureEl = document.createElement("span");
-  temperatureEl.textContent =
+  // create el for temp data
+  let tempEl = document.createElement("span");
+  tempEl.textContent =
     "Temperature: " + Math.round(weather.main.temp) + "°F";
-  temperatureEl.classList = "list-group-item";
+  tempEl.classList = "list-group-item";
 
-  // create el to hold feels like temp
+  // create el for feels like temp
   let feelsLikeEl = document.createElement("span");
   feelsLikeEl.textContent =
     "Feels Like: " + Math.round(weather.main.feels_like) + "°F";
   feelsLikeEl.classList = "list-group-item";
 
-  // create el to hold humidity data
+  // create el for humidity data
   let humidityEl = document.createElement("span");
   humidityEl.textContent = "Humidity: " + weather.main.humidity + "%";
   humidityEl.classList = "list-group-item";
 
-  // create el to hold wind data
+  // create el for wind data
   let windSpeedEl = document.createElement("span");
   windSpeedEl.textContent = "Wind: " + Math.round(weather.wind.speed) + " MPH";
   windSpeedEl.classList = "list-group-item";
 
   //append to weather container
-  weatherContainerEl.appendChild(temperatureEl);
+  weatherContainerEl.appendChild(tempEl);
   weatherContainerEl.appendChild(feelsLikeEl);
   weatherContainerEl.appendChild(humidityEl);
   weatherContainerEl.appendChild(windSpeedEl);
@@ -164,16 +164,16 @@ function printForecast(weather) {
     forecastEl.appendChild(forecastDate);
 
     //create an image el
-    let weatherIcon = document.createElement("img");
-    weatherIcon.classList = "card-body text-center";
+    let wIcon = document.createElement("img");
+    wIcon.classList = "card-body text-center";
     let icon = dailyForecast.weather[0].icon;
-    weatherIcon.setAttribute(
+    wIcon.setAttribute(
       "src",
       "https://openweathermap.org/img/wn/" + icon + ".png"
     );
 
     //append to forecast card
-    forecastEl.appendChild(weatherIcon);
+    forecastEl.appendChild(wIcon);
 
     //create and append temp span
     let forecastTempEl = document.createElement("span");
@@ -190,11 +190,11 @@ function printForecast(weather) {
     forecastEl.appendChild(forecastWindEl);
 
     // create and append humidity span
-    let forecastHumEl = document.createElement("span");
-    forecastHumEl.classList = "card-body";
-    forecastHumEl.textContent =
+    let forecastHumidityEl = document.createElement("span");
+    forecastHumidityEl.classList = "card-body";
+    forecastHumidityEl.textContent =
       "Humidity: " + dailyForecast.main.humidity + "%";
-    forecastEl.appendChild(forecastHumEl);
+    forecastEl.appendChild(forecastHumidityEl);
 
     //append to five day container
     forecastContainerEl.appendChild(forecastEl);
@@ -205,7 +205,7 @@ function printForecast(weather) {
 function searchHistory(previousSearch) {
   searchHistoryEl = document.createElement("button");
   searchHistoryEl.textContent = previousSearch;
-  searchHistoryEl.classList = "d-flex w-100 btn-light rounded border p-2";
+  searchHistoryEl.classList = "d-flex w-100 btn-dark rounded border p-2";
   searchHistoryEl.setAttribute("data-city", previousSearch);
   searchHistoryEl.setAttribute("type", "submit");
   previousSearchButtonEl.prepend(searchHistoryEl);
