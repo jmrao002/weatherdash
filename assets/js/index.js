@@ -54,7 +54,7 @@ function printWeather(weather, searchCity) {
   // create date el
   let currentDate = document.createElement("span");
   currentDate.textContent =
-    "   -   " + moment(weather.dt.value).format("MMM D, YYYY");
+    "   -   " + moment(weather.dt.value).format("dddd MMM D");
   citySearchInputEl.appendChild(currentDate);
   // create an image el
   let weatherIcon = document.createElement("img");
@@ -64,6 +64,7 @@ function printWeather(weather, searchCity) {
     "https://openweathermap.org/img/wn/" + icon + ".png"
   );
   citySearchInputEl.appendChild(weatherIcon);
+  console.log(weather);
 
   // create el to hold temperature data
   let temperatureEl = document.createElement("span");
@@ -71,18 +72,25 @@ function printWeather(weather, searchCity) {
     "Temperature: " + Math.round(weather.main.temp) + "°F";
   temperatureEl.classList = "list-group-item";
 
-  // create el to hold Humidity data
+  // create el to hold feels like temp
+  let feelsLikeEl = document.createElement("span");
+  feelsLikeEl.textContent =
+    "Feels Like: " + Math.round(weather.main.feels_like) + "°F";
+  feelsLikeEl.classList = "list-group-item";
+
+  // create el to hold humidity data
   let humidityEl = document.createElement("span");
   humidityEl.textContent = "Humidity: " + weather.main.humidity + "%";
   humidityEl.classList = "list-group-item";
 
-  // create el to hold Wind data
+  // create el to hold wind data
   let windSpeedEl = document.createElement("span");
   windSpeedEl.textContent = "Wind: " + Math.round(weather.wind.speed) + " MPH";
   windSpeedEl.classList = "list-group-item";
 
-  //append to container
+  //append to weather container
   weatherContainerEl.appendChild(temperatureEl);
+  weatherContainerEl.appendChild(feelsLikeEl);
   weatherContainerEl.appendChild(humidityEl);
   weatherContainerEl.appendChild(windSpeedEl);
 
@@ -148,10 +156,10 @@ function printForecast(weather) {
     forecastEl.classList = "card bg-info text-light m-2";
 
     //create date el
-    let forecastDate = document.createElement("h5");
+    let forecastDate = document.createElement("h4");
     forecastDate.textContent = moment
       .unix(dailyForecast.dt)
-      .format("MMM D, YYYY");
+      .format("ddd MMM D");
     forecastDate.classList = "card-header text-center";
     forecastEl.appendChild(forecastDate);
 

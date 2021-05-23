@@ -21,10 +21,10 @@
     <!-- main container for body -->
     <main>
         <div class="row">
-            <aside class="col-12 col-md-3 p-4 search-column">
+            <aside class="col-12 col-md-3 p-4">
                 <form class="border p-2" id="city-search-form">
                     <h4>Search for a City</h2>
-                        <input id="city" type="text" placeholder="Chicago" class="form-input" />
+                        <input id="city" type="text" placeholder="Enter city name here" class="form-input" />
                         <button class="btn btn-primary" type="submit">Search</button>
                 </form>
                 <div class="past-search" id="search-history-buttons"></div>
@@ -33,7 +33,7 @@
                 <div class="row border selected-city" id="current-forecast">
                     <div class="col-12">
                         <h2 id="searched-city"></h2>
-                        <div id="todays-weather-container" class="list-group"></div>
+                        <div id="todays-weather-container" class="list-group container-sm"></div>
                     </div>
                 </div>
                 <div class="row border" id="five-day-forecast">
