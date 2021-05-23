@@ -51,18 +51,19 @@ function printWeather(weather, searchCity) {
   // clear old content when searching for a new city
   weatherContainerEl.textContent = "";
   citySearchInputEl.textContent = searchCity;
-  // create date el
+  // add date el
   let currentDate = document.createElement("span");
   currentDate.textContent =
     "   -   " + moment(weather.dt.value).format("dddd MMM D");
   citySearchInputEl.appendChild(currentDate);
-  // create an image el
+  // add image el for icon
   let wIcon = document.createElement("img");
   let icon = weather.weather[0].icon;
   wIcon.setAttribute(
     "src",
     "https://openweathermap.org/img/wn/" + icon + ".png"
   );
+  // append icon
   citySearchInputEl.appendChild(wIcon);
   console.log(weather);
 
@@ -172,7 +173,7 @@ function printForecast(weather) {
       "https://openweathermap.org/img/wn/" + icon + ".png"
     );
 
-    //append to forecast card
+    //append icon
     forecastEl.appendChild(wIcon);
 
     //create and append temp span
