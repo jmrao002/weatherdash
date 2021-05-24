@@ -18,6 +18,8 @@ On the left side of the screen, user's can enter the name of a city and search f
 
 Once the user searches for a city, it will appear in a search history list below the search button. Users can then click previous searches to search for the weather for that city.
 
+The currently searched city name is also a clickable link. This link will take users to Google Maps to view their city. This was built to allow users to validate their city choice.
+
 The UV index that appears is dynamically color coded to show the severity. UV indexes color coded red signify "severe", yellow is "moderate", and green is "favorable".
 
 # Setup/Installation Requirements
