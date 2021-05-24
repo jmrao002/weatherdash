@@ -21,23 +21,26 @@
     <!-- main container for body -->
     <main>
         <div class="row">
-            <aside class="col-12 col-md-3 p-4">
-                <form class="border p-2" id="city-search-form">
-                    <h4>Search for a City</h2>
-                        <input id="city" type="text" placeholder="Enter city name here" class="form-input" />
-                        <button class="btn btn-primary" type="submit">Search</button>
+            <aside class="col-sm col-md-3 p-4 border">
+                <form class="p-2 form-group form-inline" id="city-search-form">
+                    <h2>Search for a City</h2>
+                    <input id="city" type="text" placeholder="Enter city name here" class="form-control m-3" />
+                    <button class="btn btn-primary form-control" type="submit">Search</button>
                 </form>
                 <div class="past-search" id="search-history-buttons"></div>
             </aside>
-            <section id="page-container" class="col-12 col-md-9 d-none">
-                <div class="row border selected-city" id="current-forecast">
-                    <div class="col-12">
-                        <h2 id="searched-city"></h2>
-                        <div id="todays-weather-container" class="list-group container-sm"></div>
+            <section id="page-container" class="col-lg col-md-9 d-none">
+                <div class="border selected-city" id="current-forecast">
+                    <div class="col-lg row">
+                        <a target="_blank" id="searched-city" class="h2"
+                            title="Click the link to see your city on Google Maps!"></a>
+                        <h2 id="todays-date"></h2>
                     </div>
+                    <div id="todays-weather-container" class="list-group container-sm"></div>
+
                 </div>
-                <div class="row border" id="five-day-forecast">
-                    <h2 class="col-12" id="forecast-header-text"></h2>
+                <div class="row" id="five-day-forecast">
+                    <h3 class="col-12" id="forecast-header-text"></h3>
                     <div class="d-flex" id="fiveday-container"></div>
                 </div>
             </section>
